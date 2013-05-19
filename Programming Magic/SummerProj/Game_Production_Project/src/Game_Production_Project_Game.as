@@ -28,10 +28,9 @@ package
 		const gravity:Number = 1;
 		private var background:graphic;
 		private var brick:graphic;
-		private var brickCharacter:Player;
-		
-		
-		
+		private var mainCharacter:Player;
+		private var cameraPos:Number;
+				
 		public function init():void
 		{		
 			//myLocalVariableName = new graphic(embed_images.myGraphicVariableName);
@@ -39,16 +38,17 @@ package
 			background.x = 0;
 			background.y = 0;
 			this.addChild(background);
-			brickCharacter = new Player();
-			brickCharacter.Init(embed_images.brick, 100, 100);
-			addChild(brickCharacter);
+			cameraPos = stage.stageWidth * .5;
+			mainCharacter = new Player();
+			mainCharacter.Init(embed_images.brick, 100, 100);
+			addChild(mainCharacter);
 			
 			//Mouse.hide();
 			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(MouseEvent.CLICK, handleClick);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, brickCharacter.KeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, brickCharacter.KeyUp);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, mainCharacter.KeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, mainCharacter.KeyUp);
 			//stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 		}
 		
@@ -56,8 +56,13 @@ package
 		public function update(e:Event):void
 		{		
 			
-			brickCharacter.Update(gravity);
-			
+			mainCharacter.Update(gravity);
+			collideWithBackground(mainCharacter);
+			adjustScreenPos(mainCharacter);
+		}
+		
+		public function collideWithBackground(brickCharacter:Character):void
+		{
 			if ( HitTest.complexHitTestObject( brickCharacter.mCharacterArt, background))   //complete hit testing
 			{
 				//reset before testing
@@ -127,13 +132,21 @@ package
 						
 					}
 				}
-					
 				brickCharacter.setFinalPos();
-				
+			}
+		}
+		
+		public function adjustScreenPos(mainChar:Player):void
+		{
+			if ( mainChar.x < 0)
+				mainChar.x = 0;
+			
+			if ( mainChar.x > cameraPos)
+			{
+				background.x += (cameraPos - mainChar.x);
+				mainChar.x = cameraPos;
 			}
 			
-			
-				
 		}
 		
 		public function handleClick(e:MouseEvent):void

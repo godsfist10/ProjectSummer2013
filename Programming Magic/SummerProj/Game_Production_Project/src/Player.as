@@ -22,17 +22,12 @@ package
 	 * @author ...
 	 */
 	public class Player extends Character
-	{
-		private const MAX_SPEED:Point = new Point(10, 30);
-		private const MAX_ACCELERATION:Point = new Point(6, 2);
-			
+	{			
 		public var KeyWDown:Boolean;
 		public var KeySDown:Boolean;
 		public var KeyADown:Boolean;
 		public var KeyDDown:Boolean;
-		public var SpaceKeyDown:Boolean;	
-		public var jumped:Boolean;
-		public var onGround:Boolean;
+		
 		
 		public function Player()
 		{
@@ -107,93 +102,7 @@ package
 			
 		}
 		
-		public function SetPrevious():void
-		{
-			this.x = mPrevious.x;
-			this.y = mPrevious.y;
-		}
 		
-		public function setVelocity(velocity:Point):void
-		{
-			mVelocity.x = velocity.x;
-			mVelocity.y = velocity.y;
-		}
-		
-		public function setYVelocity(yVelocity:Number):void
-		{
-			mVelocity.y = yVelocity;
-			
-		}
-		
-		public function SetPrevious_Advanced():void
-		{
-			if ( mBlockedHorizontal)
-			{
-				mBlockedHorizontal = false;
-				this.x = mPrevious.x;
-				mVelocity.x = 0;
-				mAcceleration.x = 0;
-			}
-			if (mBlockedVertical)
-			{
-				mBlockedVertical = false;
-				this.y = mPrevious.y;
-				mVelocity.y = 0;
-				mAcceleration.y = 0;
-			}
-		}
-		
-		public function SetPrevious_Advanced_Test( setBackX:Boolean, setBackY:Boolean, stopMovement:Boolean = false):void
-		{
-			if ( setBackX && stopMovement)
-			{
-				mBlockedHorizontal = false;
-				this.x = mPrevious.x;
-				mVelocity.x = 0;
-				mAcceleration.x = 0;
-			}
-			if (setBackY && stopMovement)
-			{
-				mBlockedVertical = false;
-				this.y = mPrevious.y;
-				mVelocity.y = 0;
-				mAcceleration.y = 0;
-			}
-			if ( setBackX && !stopMovement)
-			{
-				this.x = mPrevious.x;			
-			}
-			if (setBackY && !stopMovement)
-			{
-				this.y = mPrevious.y;
-			}
-			
-		}
-		
-		public function setCurrent_Test(setXCurrent:Boolean, setYCurrent:Boolean):void
-		{
-			if ( setXCurrent)
-				this.x = mCurrentPos.x;
-			if (setYCurrent)
-				this.y = mCurrentPos.y;
-		}
-		
-		public function setFinalPos():void
-		{
-			mPrevious.x = this.x;
-			mPrevious.y = this.y;	
-		}
-		
-		public function SetPrevious_Advanced_Undo():void
-		{
-			this.x = mCurrentPos.x;
-			this.y = mCurrentPos.y;
-		}
-		
-		public function getVelocity():Point
-		{
-			return mVelocity;
-		}
 		
 		public function KeyDown(e:KeyboardEvent):void
 		{
