@@ -1,5 +1,6 @@
 package  
 {
+	import flash.display.Stage;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import flash.media.Sound;
@@ -34,7 +35,7 @@ package
 			
 		}
 		
-		override public function Init(character:Class, xPos:int, yPos:int) :void
+		override public function Init(character:Class, xPos:int, yPos:int, stageThing:Stage) :void
 		{
 			mCharacterArt = new graphic(character);
 			this.x = xPos;
@@ -49,11 +50,11 @@ package
 			KeyADown = false;
 			KeySDown = false;
 			KeyDDown = false;
-			
-		
+			stageThing.addEventListener(KeyboardEvent.KEY_DOWN, KeyDown);
+			stageThing.addEventListener(KeyboardEvent.KEY_UP, KeyUp);
 		}
 		
-		public function Update(gravity:Number):void
+		public override function Update(gravity:Number):void
 		{
 			mPrevious.x = this.x;
 			mPrevious.y = this.y;

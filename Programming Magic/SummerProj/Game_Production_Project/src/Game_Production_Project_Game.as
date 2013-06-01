@@ -19,135 +19,36 @@ package
 	import content.*;
 	import includes.*;
 	
-	
-	
-	
 	public class Game_Production_Project_Game extends MovieClip 
 	{
 		//private var myLocalVariableName:graphic,
-		const gravity:Number = 1;
-		private var background:graphic;
-		private var brick:graphic;
-		private var mainCharacter:Player;
-		private var cameraPos:Number;
+		private const gravity:Number = 1;
+		private var SceneOne:Scene;
 				
 		public function init():void
 		{		
 			//myLocalVariableName = new graphic(embed_images.myGraphicVariableName);
-			background = new graphic(embed_images.collider);
-			background.x = 0;
-			background.y = 0;
-			this.addChild(background);
-			cameraPos = stage.stageWidth * .5;
-			mainCharacter = new Player();
-			mainCharacter.Init(embed_images.brick, 100, 100);
-			addChild(mainCharacter);
+			
+			SceneOne = new Scene();
+			SceneOne.init(embed_images.collider, embed_images.brick, 100, 100, stage);
+			addChild(SceneOne);
 			
 			//Mouse.hide();
 			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(MouseEvent.CLICK, handleClick);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, mainCharacter.KeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, mainCharacter.KeyUp);
+				
 			//stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 		}
 		
 		
 		public function update(e:Event):void
 		{		
+			SceneOne.update(gravity);
 			
-			mainCharacter.Update(gravity);
-			collideWithBackground(mainCharacter);
-			adjustScreenPos(mainCharacter);
 		}
 		
-		public function collideWithBackground(brickCharacter:Character):void
-		{
-			if ( HitTest.complexHitTestObject( brickCharacter.mCharacterArt, background))   //complete hit testing
-			{
-				//reset before testing
-				brickCharacter.SetPrevious_Advanced_Test(true, true);
-					
-				//test for horizontal collision
-				brickCharacter.setCurrent_Test(true, false);
-				if (  HitTest.complexHitTestObject( brickCharacter.mCharacterArt, background))
-				{
-					brickCharacter.SetPrevious_Advanced_Test(true, false);
-					var tempXVelocity:Number = brickCharacter.getVelocity().x;
-					
-					for ( var i:Number = 0; i < Math.abs(tempXVelocity); i++)
-					{
-						if (tempXVelocity < 0)
-							brickCharacter.x--;
-						else
-							brickCharacter.x++;
-							
-						if ( HitTest.complexHitTestObject( brickCharacter.mCharacterArt, background))
-						{
-							if( tempXVelocity < 0)
-								brickCharacter.x++;
-							else
-								brickCharacter.x--;
-							i = 900;
-							
-						}
-						
-					}
-				}
-				
-				//test vertical collision
-				brickCharacter.setCurrent_Test(false, true);
-				if (  HitTest.complexHitTestObject( brickCharacter.mCharacterArt, background))
-				{
-					brickCharacter.SetPrevious_Advanced_Test(false, true);
-					var tempYVelocity:Number = brickCharacter.getVelocity().y;
-					
-					for ( var j:Number = 0; j < Math.abs(tempYVelocity); j++)
-					{
-						if (tempYVelocity < 0)
-							brickCharacter.y--;
-						else
-							brickCharacter.y++;
-							
-						if ( HitTest.complexHitTestObject( brickCharacter.mCharacterArt, background))
-						{
-							if( tempYVelocity < 0)
-								brickCharacter.y++;
-							else
-								brickCharacter.y--;
-							
-							if ( j == 0 && tempYVelocity > 0)
-							{
-								brickCharacter.setYVelocity(0);
-								brickCharacter.onGround = true;
-								if (brickCharacter.SpaceKeyDown && !brickCharacter.jumped)
-								{
-									brickCharacter.jumped = true;
-									brickCharacter.setYVelocity( -30);
-								}
-							}
-								
-							j = 900;
-						}
-						
-					}
-				}
-				brickCharacter.setFinalPos();
-			}
-		}
 		
-		public function adjustScreenPos(mainChar:Player):void
-		{
-			if ( mainChar.x < 0)
-				mainChar.x = 0;
-			
-			if ( mainChar.x > cameraPos)
-			{
-				background.x += (cameraPos - mainChar.x);
-				mainChar.x = cameraPos;
-			}
-			
-		}
 		
 		public function handleClick(e:MouseEvent):void
 		{

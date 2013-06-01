@@ -17,6 +17,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.display.Stage
 	import content.*;
 	import includes.*;
 	
@@ -45,13 +46,55 @@ package
 		{
 		}
 		
-		public function Init(character:Class, xPos:int, yPos:int):void
+		public function Init(character:Class, xPos:int, yPos:int, stageThing:Stage):void
 		{
 			mCharacterArt = new graphic(character);
 			this.x = xPos;
 			this.y = yPos;
+			mPrevious = new Point(0,0);
+			mVelocity = new Point (0, 0);
+			mAcceleration = new Point (0, 0);
+			mCurrentPos = new Point(xPos, yPos);
 			this.addChild(mCharacterArt);
 		}
+		
+		public function Update(gravity:Number):void
+		{
+			mPrevious.x = this.x;
+			mPrevious.y = this.y;
+			onGround = false;
+		
+			mAcceleration.y += gravity;
+				
+			if ( mAcceleration.x > MAX_ACCELERATION.x)
+				mAcceleration.x = MAX_ACCELERATION.x;
+			if ( mAcceleration.x < MAX_ACCELERATION.x * -1)
+				mAcceleration.x = MAX_ACCELERATION.x * -1;
+			if ( mAcceleration.y > MAX_ACCELERATION.y)
+				mAcceleration.y = MAX_ACCELERATION.y;
+			if ( mAcceleration.y < MAX_ACCELERATION.y * -1)
+				mAcceleration.y = MAX_ACCELERATION.y * -1;
+			
+			mVelocity.x += mAcceleration.x;
+			mVelocity.y += mAcceleration.y;
+				
+			if ( mVelocity.x > MAX_SPEED.x)
+				mVelocity.x = MAX_SPEED.x;
+			if ( mVelocity.x < MAX_SPEED.x * -1)
+				mVelocity.x = MAX_SPEED.x * -1;
+			if ( mVelocity.y > MAX_SPEED.y)
+				mVelocity.y = MAX_SPEED.y;
+			if ( mVelocity.y < MAX_SPEED.y * -1)
+				mVelocity.y = MAX_SPEED.y * -1;
+			
+			this.x += mVelocity.x;
+			this.y += mVelocity.y;
+			mCurrentPos.x = this.x;
+			mCurrentPos.y = this.y;
+			
+		}
+		
+		
 		public function SetPrevious():void
 		{
 			this.x = mPrevious.x;
