@@ -1,0 +1,37 @@
+mapFileName
+Level_2_2.txt
+-
+numberOfTiles
+28
+-
+tileSize
+64
+-
+tileWidthNumber
+120
+-
+tileHeightNumber
+24
+-
+new
+0
+-
+spritesheet name
+Level0
+-
+unit data driven filename
+Features_Level_2_2.txt
+-
+unit spritesheet name
+units
+-
+number of placeable units
+5
+-
+obstacle spritesheet name
+obstacles
+-
+number of placeable obstacle
+2
+-
+end
